@@ -1,0 +1,40 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <nav class="sidenav-nav">
+      <a mat-button routerLink="/cotacoes" routerLinkActive="active" (click)="closeDrawerIfMobile(drawer)">
+        <mat-icon>list</mat-icon>
+        <span>Minhas Cotações</span>
+      </a>
+      <a mat-button routerLink="/cotacoes/nova" routerLinkActive="active" (click)="closeDrawerIfMobile(drawer)">
+        <mat-icon>add_circle</mat-icon>
+        <span>Nova Cotação</span>
+      </a>
+    </nav>
+  </mat-sidenav>
+  
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="main-toolbar">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="toolbar-title">{{ title }}</span>
+      <span class="spacer"></span>
+      <button mat-icon-button aria-label="Configurações">
+        <mat-icon>settings</mat-icon>
+      </button>
+    </mat-toolbar>
+    
+    <main class="page-content">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

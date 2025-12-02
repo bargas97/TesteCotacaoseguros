@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: cotacao-sqlserver
+    environment:
+      - SA_PASSWORD=Teste@123
+      - ACCEPT_EULA=Y
+    ports:
+      - "14333:1433"
+    volumes:
+      - mssql-data:/var/opt/mssql
+    networks:
+      - cotacao-network
+
+  api:
+    build:
+      context: .
+      dockerfile: src/WebApi/Dockerfile
+    container_name: cotacao-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=CotacaoSegurosDb;User Id=sa;Password=Teste@123;TrustServerCertificate=True;Encrypt=False
+    depends_on:
+      - sqlserver
+    ports:
+      - "5138:8080"
+    networks:
+      - cotacao-network
+
+  webapp:
+    build:
+      context: src/WebApp
+      dockerfile: Dockerfile
+    container_name: cotacao-webapp
+    depends_on:
+      - api
+    ports:
+      - "4200:80"
+    networks:
+      - cotacao-network
+
+networks:
+  cotacao-network:
+    driver: bridge
+
+volumes:
+  mssql-data:

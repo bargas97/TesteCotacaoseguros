@@ -1,0 +1,19 @@
+{
+  "/cotacoes": {
+    "target": "http://localhost:5138",
+    "secure": false,
+    "changeOrigin": false,
+    "logLevel": "info"
+  },
+  "/health": {
+    "target": "http://localhost:5138",
+    "secure": false,
+    "changeOrigin": false
+  },
+  "/catalogo": {
+    "target": "http://localhost:5138",
+    "secure": false,
+    "changeOrigin": false,
+    "logLevel": "info"
+  }
+}
