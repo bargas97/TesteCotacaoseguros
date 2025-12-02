@@ -25,12 +25,28 @@ Após executar `dev-up.ps1`, aguarde ~30 segundos para os serviços inicializare
 
 **Requisitos**: Podman instalado com `podman-compose` (`pip install podman-compose`)
 
-### Manual
+### Manual (SQL Container + API/WebApp Local)
+
+**Opção recomendada para desenvolvimento**:
+
+```powershell
+# 1. Subir apenas SQL Server em container
+.\dev-local.ps1 -Mode sql-only
+
+# 2. Em outro terminal, rodar API local
+.\dev-api-local.ps1
+
+# 3. Em outro terminal, rodar WebApp local
+.\dev-webapp-local.ps1
+```
+
+**Ou executar individualmente**:
 
 1. Backend API
 ```powershell
 Push-Location .\src\WebApi
 $env:ASPNETCORE_ENVIRONMENT = "Development"
+$env:ConnectionStrings__DefaultConnection = "Server=localhost,14333;Database=CotacaoSegurosDb;User Id=sa;Password=Teste@123;TrustServerCertificate=True;Encrypt=False"
 dotnet run
 Pop-Location
 ```
@@ -43,8 +59,10 @@ npm start
 Pop-Location
 ```
 
+**URLs**:
 - WebApp: http://localhost:4200
 - API Swagger: http://localhost:5138/swagger
+- SQL Server: localhost:14333 (sa / Teste@123)
 
 ## Docker Compose
 
